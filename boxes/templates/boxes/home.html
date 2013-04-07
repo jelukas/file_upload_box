@@ -1,0 +1,44 @@
+{% extends 'base.html' %}{% load url from future %}
+{% block more_styles %}
+	<link href="{{ STATIC_URL }}css/dropzone.css" rel="stylesheet">
+{% endblock %}
+{% block container %}
+		<form id="uploadfileform" action="{% url 'upload_file' %}" class="dropzone" enctype="multipart/form-data" method="post">{% csrf_token %}
+			<div class="fallback">
+				<input id="id_fichero" name="fichero" type="file" multiple />
+			</div>
+		</form>
+	  	<hr>
+{% endblock %}
+{% block more_scripts %}
+	<script src="{{ STATIC_URL }}js/dropzone.js"></script>
+	<script type="text/javascript">
+		// Configuración de la Dropzone
+		//Comentado porque no funciona el Dropzone.forElement
+		/*Dropzone.options.uploadfileform = {
+			paramName: "fichero", // Hay que indicar explicitamente sino el name sera file
+			maxFilesize: 2, // MB
+	  		accept: function(file, done) {
+		    	if (file.name == "tudiablito.gif") {
+		      		done("Naha, you don't."); // si indicamos un mensaje significa que es Error
+		    	} else { 
+		    		done();
+		    	}
+	  		},
+		};*/
+		var myDropzone =  new Dropzone("#uploadfileform", {
+			paramName: "fichero", // Hay que indicar explicitamente sino el name sera file
+			maxFilesize: 2, // MB
+	  		accept: function(file, done) {
+		    	if (file.name == "tudiablito.gif") {
+		      		done("Naha, you don't."); // si indicamos un mensaje significa que es Error
+		    	} else { 
+		    		done();
+		    	}
+	  		},
+		});
+		// Eventos
+		myDropzone.on("error", function(file, message) { alert(message); });
+
+	</script>
+{% endblock %}
